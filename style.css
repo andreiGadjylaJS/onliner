@@ -11,7 +11,7 @@ a {
 body {
   width: 1400px;
   margin: 0 auto;
-  font-size: 16px;
+  font-size: 13px;
   font-family: "Open Sans", sans-serif;
   position: relative;
 }
@@ -110,18 +110,43 @@ main {
   border: 1px solid #dddddd;
 }
 .filter {
+  display: flex;
+  flex-direction: column;
   width: 17%;
   border-right: 1px solid #dddddd;
 }
-.filter__name {
+.filter__block_wrapper {
+  display: flex;
+  flex-direction: column;
+}
+.filter__heading {
+  padding-left: 10px;
+  font-size: 14px;
+  color: #333333;
+  margin: 5px 0 5px 0;
+}
+.filter__checkbox {
+  margin-left: 10px;
+}
+/* .filter__name {
   color: black;
   font-weight: bold;
   text-align: center;
   font-size: 14px;
-}
+} */
 .wrapper__filter_block {
   display: flex;
   flex-direction: column;
+}
+.checkbox-boolean {
+  padding: 10px 0 10px 0;
+}
+.input--number_range {
+  width: 100px;
+  outline: none;
+}
+.wrapper__input--number_range:nth-child(2) {
+  margin-left: 0;
 }
 
 /* .wrapper__filter {

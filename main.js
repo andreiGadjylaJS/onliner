@@ -15,12 +15,10 @@ function sendRequest(url) {
 function sendRequestFacets(url) {
     return fetch(url)
         .then(response => response.json())
-        .then(response => { return { dictionaries, facets, placeholders, segments } = response })
-        .then(response => {
-            console.log(response)
-            return renderFilter(response)
-        })
-
+        // .then(({ facets, dictionaries }) => {
+        //     return facets, dictionaries
+        // })
+        .then(response => showFilterProducts(response))
 }
 
 
