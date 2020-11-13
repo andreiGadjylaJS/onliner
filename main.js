@@ -1,4 +1,6 @@
 const arrCheckProducts = []
+const contentFilter = []
+
 let current = 1
 let requestURL = `https://catalog.onliner.by/sdapi/catalog.api/search/refrigerator`
 let requestFacets = `https://catalog.onliner.by/sdapi/catalog.api/facets/refrigerator`
@@ -15,15 +17,8 @@ function sendRequest(url) {
 function sendRequestFacets(url) {
     return fetch(url)
         .then(response => response.json())
-        // .then(({ facets, dictionaries }) => {
-        //     return facets, dictionaries
-        // })
         .then(response => showFilterProducts(response))
 }
-
-
-
-
 
 sendRequest(requestURL)
 sendRequestFacets(requestFacets)

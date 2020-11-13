@@ -128,16 +128,7 @@ main {
 .filter__checkbox {
   margin-left: 10px;
 }
-/* .filter__name {
-  color: black;
-  font-weight: bold;
-  text-align: center;
-  font-size: 14px;
-} */
-.wrapper__filter_block {
-  display: flex;
-  flex-direction: column;
-}
+
 .checkbox-boolean {
   padding: 10px 0 10px 0;
 }
@@ -148,26 +139,6 @@ main {
 .wrapper__input--number_range:nth-child(2) {
   margin-left: 0;
 }
-
-/* .wrapper__filter {
-  display: flex;
-  flex-direction: column;
-  flex-wrap: wrap;
-  padding-left: 10px;
-  padding-top: 10px;
-}
-.wrapper__filter p {
-  font-weight: 700;
-}
-.field__price {
-  width: 107px;
-  height: 30px;
-  outline: none;
-}
-input[type="number"]::-webkit-outer-spin-button,
-input[type="number"]::-webkit-inner-spin-button {
-  -webkit-appearance: none;
-} */
 
 .product {
   display: flex;

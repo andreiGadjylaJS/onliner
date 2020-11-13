@@ -1,10 +1,11 @@
 const showFilterProducts = (response) => {
-    let facetsItems = response.facets.general.items
-    let facetsDictionaries = response.dictionaries
-    console.log(response)
+    const facetsItems = response.facets.general.items
+    const dictionaries = response.dictionaries
+    let str = ''
+
     facetsItems.forEach(item => {
         switch (item.type) {
-            case 'dictionary': renderDictionaryFilter(item, response)
+            case 'dictionary': renderDictionaryFilter(item, dictionaries)
                 break;
 
             case 'boolean': renderBooleanFilter(item)
@@ -16,39 +17,35 @@ const showFilterProducts = (response) => {
             default: break
         }
     })
-}
-
-
-const renderDictionaryFilter = (item, response) => {
-    let current = 0
-    let checkboxFilter = document.createElement('div')
-    checkboxFilter.classList = 'filter__block_wrapper'
-    if (item.name) { checkboxFilter.innerHTML = ` <h4 class='filter__heading'>${item.name}</h4>` }
-    for (let i = 0; i < response.dictionaries[item.parameter_id].length; i++) {
-        if (current > 4) break
-        checkboxFilter.innerHTML += `<label><input type='checkbox' class='filter__checkbox js-check'>${response.dictionaries[item.parameter_id][i].name}</label>`
-        document.querySelector('.filter').append(checkboxFilter)
-        current++
-    }
-
+    const checkboxFilter = document.createElement('div')
+    checkboxFilter.classList = 'filter__block_wrapper checkbox-boolean'
+    checkboxFilter.innerHTML = `${contentFilter.join('')}`
+    document.querySelector('.filter').append(checkboxFilter)
 
 }
 
+const renderDictionaryFilter = (item, dictionaries) => {
+    const nameParameter = dictionaries[item.parameter_id]
+    str = `<h4 class='filter__heading'>${item.name}</h4>`
+    nameParameter.forEach((item, index) => {
+        if (index < 5) {
+            str += `<label><input type='checkbox' class='filter__checkbox js-check'>${nameParameter[index].name}</label>`;
+        }
+    })
+    contentFilter.push(str)
+}
 
 const renderBooleanFilter = item => {
-    let checkboxFilter = document.createElement('div')
-    checkboxFilter.classList = 'filter__block_wrapper checkbox-boolean'
-    checkboxFilter.innerHTML = `<label><input type='checkbox' class='filter__checkbox js-check'>${item.name}</label>`
-    document.querySelector('.filter').append(checkboxFilter)
-
+    str = `<label><input type='checkbox' class='filter__checkbox js-check'>${item.name}</label>`
+    contentFilter.push(str)
 }
 
-const renderNumber_rangeFilter = (item) => {
-    let checkboxFilter = document.createElement('div')
-    checkboxFilter.classList = 'filter__block_wrapper '
-    checkboxFilter.innerHTML = `<div class='wrapper__input--number_range'><h4 class='filter__heading'>${item.name}</h4>
-    <input type='text' class='filter__checkbox js-check input--number_range'  ><input type='text' class='filter__checkbox js-check input--number_range'></div>`
-    document.querySelector('.filter').append(checkboxFilter)
+const renderNumber_rangeFilter = item => {
+    str = `
+        <h4 class='filter__heading'>${item.name}</h4>
+        <input type='text' class='filter__checkbox js-check input--number_range'  >
+        <input type='text' class='filter__checkbox js-check input--number_range'>       `
+    contentFilter.push(str)
 }
 
 
