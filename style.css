@@ -136,17 +136,29 @@ main {
   width: 100px;
   outline: none;
 }
-.wrapper__input--number_range:nth-child(2) {
+.wrapper__number_range {
+  display: flex;
+}
+.wrapper__number_range input:nth-child(2) {
   margin-left: 0;
+}
+.checkbox--typeBoolean {
+  margin-top: 15px;
+  margin-bottom: 10px;
 }
 
 .product {
   display: flex;
-  justify-content: space-around;
-  align-items: center;
+  flex-direction: column;
   margin-top: 10px;
   border: 1 px solid black;
   width: 1160px;
+}
+.products-position {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  margin-top: 20px;
 }
 
 .product__discription {
