@@ -35,7 +35,7 @@ const renderDictionaryFilter = (facetsItems, dictionaries) => {
 }
 
 const renderBooleanFilter = facetsItems => {
-    str = `<label><input type='checkbox' class='filter__checkbox js-check checkbox--typeBoolean' value='${facetsItems.parameter_id}'>${facetsItems.name}</label>`
+    str = `<label><input type='checkbox' class='filter__checkbox js-check checkbox--typeBoolean' data-group-id='${facetsItems.parameter_id}'>${facetsItems.name}</label>`
     contentFilter.push(str)
 }
 
@@ -43,8 +43,8 @@ const renderNumberRangeFilter = facetsItems => {
     str = `
         <h4 class='filter__heading'>${facetsItems.name}</h4>
         <div class='wrapper__number_range'>
-            <input type='text' class='filter__checkbox js-check input--number_range value=''  >
-            <input type='text' class='filter__checkbox js-check input--number_range' value=''>   
+            <input type='text' class='filter__checkbox js-check input--number_range from' data-group-id='${facetsItems.parameter_id}' value=''  >
+            <input type='text' class='filter__checkbox js-check input--number_range to' data-group-id='${facetsItems.parameter_id}' value=''>   
         </div>    `
     contentFilter.push(str)
 }

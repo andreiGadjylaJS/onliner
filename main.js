@@ -1,5 +1,4 @@
 const arrCheckProducts = []
-const checkProductsTypeBoolean = []
 const contentFilter = []
 let filterValues = []
 
@@ -21,9 +20,20 @@ function sendRequestFacets(url) {
         .then(response => response.json())
         .then(response => {
             filterValues = response.facets.general.items.map(item => {
-                return {
-                    'groupId': item.parameter_id, 'itemIds': []
+                if (item.type === 'dictionary') {
+                    return {
+                        'type': item.type, 'groupId': item.parameter_id, 'itemIds': []
+                    }
+                } else if (item.type === 'number_range') {
+                    return {
+                        'type': item.type, 'groupId': item.parameter_id, 'from': 0, 'to': 0
+                    }
+                } else if ('boolean') {
+                    return {
+                        'type': item.type, 'groupId': item.parameter_id, 'state': false
+                    }
                 }
+
             })
 
             return showFilterProducts(response)
