@@ -28,14 +28,14 @@ const renderDictionaryFilter = (facetsItems, dictionaries) => {
     str = `<h4 class='filter__heading'>${facetsItems.name}</h4>`
     nameParameter.forEach((item, index) => {
         if (index < 5) {
-            str += `<label><input type='checkbox' class='filter__checkbox js-check' data-group-id='${facetsItems.parameter_id}' data-item-id='${item.id}'>${nameParameter[index].name}</label>`;
+            str += `<label><input type='checkbox' class='filter__checkbox js-check' data-group-id='${facetsItems.parameter_id}' data-item-id='${item.id}' data-type='${facetsItems.type}'>${nameParameter[index].name}</label>`;
         }
     })
     contentFilter.push(str)
 }
 
 const renderBooleanFilter = facetsItems => {
-    str = `<label><input type='checkbox' class='filter__checkbox js-check checkbox--typeBoolean' data-group-id='${facetsItems.parameter_id}'>${facetsItems.name}</label>`
+    str = `<label><input type='checkbox' class='filter__checkbox js-check checkbox--typeBoolean' data-group-id='${facetsItems.parameter_id}' data-type='${facetsItems.type}'>${facetsItems.name}</label>`
     contentFilter.push(str)
 }
 
@@ -43,8 +43,8 @@ const renderNumberRangeFilter = facetsItems => {
     str = `
         <h4 class='filter__heading'>${facetsItems.name}</h4>
         <div class='wrapper__number_range'>
-            <input type='text' class='filter__checkbox js-check input--number_range from' data-group-id='${facetsItems.parameter_id}' value=''  >
-            <input type='text' class='filter__checkbox js-check input--number_range to' data-group-id='${facetsItems.parameter_id}' value=''>   
+            <input type='text' class='filter__checkbox js-check input--number_range from' data-group-id='${facetsItems.parameter_id}' data-type='${facetsItems.type}' value=''  >
+            <input type='text' class='filter__checkbox js-check input--number_range to' data-group-id='${facetsItems.parameter_id}' data-type='${facetsItems.type}' value=''>   
         </div>    `
     contentFilter.push(str)
 }
