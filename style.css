@@ -136,6 +136,12 @@ main {
   width: 100px;
   outline: none;
 }
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
 .wrapper__number_range {
   display: flex;
 }

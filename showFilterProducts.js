@@ -43,8 +43,8 @@ const renderNumberRangeFilter = facetsItems => {
     str = `
         <h4 class='filter__heading'>${facetsItems.name}</h4>
         <div class='wrapper__number_range'>
-            <input type='text' class='filter__checkbox js-check input--number_range from' data-group-id='${facetsItems.parameter_id}' data-type='${facetsItems.type}' value=''  >
-            <input type='text' class='filter__checkbox js-check input--number_range to' data-group-id='${facetsItems.parameter_id}' data-type='${facetsItems.type}' value=''>   
+            <input type='number' class='filter__checkbox  js-check input--number_range from' data-group-id='${facetsItems.parameter_id}' data-type='${facetsItems.type}' value=''  >
+            <input type='number' class='filter__checkbox js-check input--number_range to' data-group-id='${facetsItems.parameter_id}' data-type='${facetsItems.type}' value=''>   
         </div>    `
     contentFilter.push(str)
 }
