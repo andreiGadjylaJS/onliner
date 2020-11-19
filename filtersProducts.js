@@ -2,7 +2,18 @@ let paramsUrlBoolean = ''
 let paramsUrlDictionary = ''
 let paramsUrlNumberRange = ''
 
-document.querySelector('.filter').addEventListener('click', e => {
+// document.querySelector('.filter').addEventListener('click', e => {
+//     if(e.target.classList[3] === 'from' || e.target.classList[3] === 'to') {
+
+//     }
+//     if (e.target.classList[1] === 'js-check') {
+//         filtersProducts(e.target)
+//         console.log(filterValues)
+
+//     }
+// })
+
+document.querySelector('.filter').addEventListener('input', e => {
     if (e.target.classList[1] === 'js-check') {
         filtersProducts(e.target)
     }
@@ -10,11 +21,6 @@ document.querySelector('.filter').addEventListener('click', e => {
 
 const filtersProducts = (target) => {
     const targetType = target.dataset.type
-    switchFiltersProducts(targetType, target)
-
-}
-
-const switchFiltersProducts = (targetType, target) => {
     switch (targetType) {
         case 'dictionary': paramsUrlDictionary = filtersProductsDictionary(target)
             break;
@@ -30,10 +36,8 @@ const switchFiltersProducts = (targetType, target) => {
     createUrl(paramsUrlBoolean, paramsUrlDictionary, paramsUrlNumberRange)
 }
 
-const createUrl = (paramsUrlBoolean, paramsUrlDictionary, paramsUrlNumberRange) => {
-    console.log(filterValues)
-    console.log(paramsUrlNumberRange)
-    let urlParamsFilter = [paramsUrlDictionary, paramsUrlBoolean, paramsUrlNumberRange].filter(item => item).join('&')
+const createUrl = (params1, params2, paramsUrl3) => {
+    let urlParamsFilter = [params1, params2, paramsUrl3].filter(item => item).join('&')
     requestURL = `https://catalog.onliner.by/sdapi/catalog.api/search/refrigerator?${urlParamsFilter}`
     clearPage()
     sendRequest(requestURL)
@@ -42,40 +46,39 @@ const createUrl = (paramsUrlBoolean, paramsUrlDictionary, paramsUrlNumberRange) 
 
 
 
+
 const filtersProductsNumberRange = (target) => {
     const groupId = target.dataset.groupId
-    target.addEventListener('input', () => {
-        if (target.classList[3] === 'from') {
-            filterValues.find(item => {
-                if (item.groupId === groupId) {
-                    item.from = target.value
-                    return
-                }
-            })
-        }
-        if (target.classList[3] === 'to') {
-            filterValues.find(item => {
-                if (item.groupId === groupId) {
-                    item.to = target.value
-                    return
-                }
-            })
-        }
-        params = filterValues.map(group => {
-            if (group.from === '' && group.to === '') {
+    if (target.classList[3] === 'from') {
+        filterValues.find(item => {
+            if (item.groupId === groupId) {
+                item.from = target.value
                 return
-            } else if (group.from && group.to) {
-                return `${group.groupId}[from]=${group.from}&${group.groupId}[to]=${group.to}`
-            } else if (group.from) {
-                return `${group.groupId}[from]=${group.from}`
-            } else if (group.to) {
-                return `${group.groupId}[to]=${group.to}`
             }
         })
-            .filter(item => item)
-            .join('&')
-        console.log(params)
+    }
+    if (target.classList[3] === 'to') {
+        filterValues.find(item => {
+            if (item.groupId === groupId) {
+                item.to = target.value
+                return
+            }
+        })
+    }
+    params = filterValues.map(group => {
+        if (group.from === '' && group.to === '') {
+            return
+        } else if (group.from && group.to) {
+            return `${group.groupId}[from]=${group.from}&${group.groupId}[to]=${group.to}`
+        } else if (group.from) {
+            return `${group.groupId}[from]=${group.from}`
+        } else if (group.to) {
+            return `${group.groupId}[to]=${group.to}`
+        }
     })
+        .filter(item => item)
+        .join('&')
+    return params
 }
 
 

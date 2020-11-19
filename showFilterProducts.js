@@ -1,7 +1,6 @@
 const showFilterProducts = (response) => {
-    const facetsItems = response.facets.general.items
+    const facetsItems = response.facets.general.items.slice(1)
     const dictionaries = response.dictionaries
-    let str = ''
     facetsItems.forEach(item => {
         switch (item.type) {
             case 'dictionary': renderDictionaryFilter(item, dictionaries)
@@ -26,6 +25,7 @@ const showFilterProducts = (response) => {
 const renderDictionaryFilter = (facetsItems, dictionaries) => {
     const nameParameter = dictionaries[facetsItems.parameter_id]
     str = `<h4 class='filter__heading'>${facetsItems.name}</h4>`
+
     nameParameter.forEach((item, index) => {
         if (index < 5) {
             str += `<label><input type='checkbox' class='filter__checkbox js-check' data-group-id='${facetsItems.parameter_id}' data-item-id='${item.id}' data-type='${facetsItems.type}'>${nameParameter[index].name}</label>`;
@@ -40,12 +40,20 @@ const renderBooleanFilter = facetsItems => {
 }
 
 const renderNumberRangeFilter = facetsItems => {
+    let newStr = ``
+    if (facetsItems.predefined_ranges) {
+        facetsItems.predefined_ranges.forEach(item => {
+            newStr += `<label><input type='checkbox' class='filter__checkbox js-check checkbox--typeBoolean' data-group-id='${facetsItems.parameter_id}' data-type='${facetsItems.type}'>${item.name}</label>`
+        })
+    }
     str = `
         <h4 class='filter__heading'>${facetsItems.name}</h4>
         <div class='wrapper__number_range'>
-            <input type='number' class='filter__checkbox  js-check input--number_range from' data-group-id='${facetsItems.parameter_id}' data-type='${facetsItems.type}' value=''  >
+            <input type='number' class='filter__checkbox js-check input--number_range from' data-group-id='${facetsItems.parameter_id}' data-type='${facetsItems.type}' value=''  >
             <input type='number' class='filter__checkbox js-check input--number_range to' data-group-id='${facetsItems.parameter_id}' data-type='${facetsItems.type}' value=''>   
-        </div>    `
+        </div>` + newStr
+
+    console.log(str)
     contentFilter.push(str)
 }
 
