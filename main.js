@@ -1,9 +1,7 @@
 const arrCheckProducts = []
 const contentFilter = []
 let filterValues = []
-
-
-
+let urlParamsFilter = []
 
 let current = 1
 let requestURL = `https://catalog.onliner.by/sdapi/catalog.api/search/refrigerator?`
@@ -29,7 +27,7 @@ function sendRequestFacets(url) {
                     }
                 } else if (item.type === 'number_range') {
                     return {
-                        type: item.type, 'groupId': item.parameter_id, 'from': 0, 'to': 0
+                        type: item.type, 'groupId': item.parameter_id, 'from': '', 'to': ''
                     }
                 } else if ('boolean') {
                     return {
@@ -37,9 +35,12 @@ function sendRequestFacets(url) {
                     }
                 }
             })
+            urlParamsFilter = response.facets.general.items.map(item => item.type)
+            urlParamsFilter = Array.from(new Set(urlParamsFilter)).map(item => { return { type: item, urlType: '' } })
             return showFilterProducts(response)
         })
 }
 
 sendRequest(requestURL)
 sendRequestFacets(requestFacets)
+

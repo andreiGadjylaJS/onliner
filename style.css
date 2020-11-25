@@ -144,9 +144,13 @@ input[type="number"]::-webkit-inner-spin-button {
 
 .wrapper__number_range {
   display: flex;
+  flex-direction: column;
 }
 .wrapper__number_range input:nth-child(2) {
-  margin-left: 0;
+  margin-left: -5px;
+}
+.wrapper__number_range_minPrice input:nth-child(2) {
+  margin-left: -5px;
 }
 .checkbox--typeBoolean {
   margin-top: 15px;
@@ -188,12 +192,7 @@ ntent {
   flex-direction: column;
   align-items: center;
 }
-/* .filter {
-  background: yellow;
-  width: 25%;
-} */
 
-/* footer */
 .input__next {
   display: flex;
   justify-content: center;
@@ -223,7 +222,11 @@ ntent {
   background: white;
   outline: none;
 }
-
+.noProducts {
+  text-align: center;
+  margin-top: 100px;
+  font-size: 18px;
+}
 /* .news {
     width: 17%;
     height: 100%;

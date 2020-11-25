@@ -1,170 +1,119 @@
-let paramsUrlBoolean = ''
-let paramsUrlDictionary = ''
-let paramsUrlNumberRange = ''
-
-// document.querySelector('.filter').addEventListener('click', e => {
-//     if(e.target.classList[3] === 'from' || e.target.classList[3] === 'to') {
-
-//     }
-//     if (e.target.classList[1] === 'js-check') {
-//         filtersProducts(e.target)
-//         console.log(filterValues)
-
-//     }
-// })
-
 document.querySelector('.filter').addEventListener('input', e => {
-    if (e.target.classList[1] === 'js-check') {
-        filtersProducts(e.target)
+    const classListCheckbox = e.target.classList
+    for (let key in classListCheckbox) {
+        if (classListCheckbox[key] === 'js-check') {
+            showFiltersProducts(e.target)
+
+        }
     }
 })
 
-const filtersProducts = (target) => {
+const showFiltersProducts = target => {
+    const targetType = target.dataset.type
+    const groupId = getGroupTarget(target)
+    let paramsUrl
+
+    changeObjectDataFilterValues(target)
+    if (targetType === 'dictionary') {
+        paramsUrl = createUrlFilterTypeDictionary(filterValues, groupId)
+    } else if (targetType === 'boolean') {
+        paramsUrl = createUrlFilterTypeBoolean(filterValues, groupId)
+    } else if (targetType === 'number_range') {
+        paramsUrl = createUrlFilterNumberRange(filterValues, groupId)
+    }
+    let url = createUrl(paramsUrl, targetType)
+    clearPage()
+    sendRequest(url)
+}
+
+const changeObjectDataFilterValues = (target) => {
     const targetType = target.dataset.type
     switch (targetType) {
-        case 'dictionary': paramsUrlDictionary = filtersProductsDictionary(target)
+        case 'dictionary': changeParamsFilterTypeDictionary(target)
             break;
 
-        case 'boolean': paramsUrlBoolean = filtersProductsBoolean(target)
+        case 'boolean': changeParamsFilterTypeBoolean(target)
             break;
 
-        case 'number_range': paramsUrlNumberRange = filtersProductsNumberRange(target)
+        case 'number_range': changeParamsFilterTypeNumberRange(target)
             break;
 
         default: break
     }
-    createUrl(paramsUrlBoolean, paramsUrlDictionary, paramsUrlNumberRange)
 }
 
-const createUrl = (params1, params2, paramsUrl3) => {
-    let urlParamsFilter = [params1, params2, paramsUrl3].filter(item => item).join('&')
-    requestURL = `https://catalog.onliner.by/sdapi/catalog.api/search/refrigerator?${urlParamsFilter}`
-    clearPage()
-    sendRequest(requestURL)
+const createUrl = (paramsUrl, targetType) => {
+    urlParamsFilter.find(item => item.type === targetType).urlType = paramsUrl
+    const urlFilter = urlParamsFilter.map(item => item.urlType).filter(item => item).join('&')
+    return `${requestURL}${urlFilter}`
 }
 
+const changeParamsFilterTypeNumberRange = target => {
+    const groupId = getGroupTarget(target)
+    const itemId = getItemIdTarget(target)
+    const valueTargetFrom = target.value.split(',')[0]
+    const valueTargetTo = target.value.split(',')[1]
+    const valueFilterFromTo = filterValues.find(item => item.groupId === groupId)
+    const classListTarget = target.classList
 
-
-
-
-const filtersProductsNumberRange = (target) => {
-    const groupId = target.dataset.groupId
-    if (target.classList[3] === 'from') {
-        filterValues.find(item => {
-            if (item.groupId === groupId) {
-                item.from = target.value
-                return
-            }
-        })
-    }
-    if (target.classList[3] === 'to') {
-        filterValues.find(item => {
-            if (item.groupId === groupId) {
-                item.to = target.value
-                return
-            }
-        })
-    }
-    params = filterValues.map(group => {
-        if (group.from === '' && group.to === '') {
-            return
-        } else if (group.from && group.to) {
-            return `${group.groupId}[from]=${group.from}&${group.groupId}[to]=${group.to}`
-        } else if (group.from) {
-            return `${group.groupId}[from]=${group.from}`
-        } else if (group.to) {
-            return `${group.groupId}[to]=${group.to}`
+    for (let key in classListTarget) {
+        if (classListTarget[key] === 'from') {
+            valueFilterFromTo.from = target.value
+        } else if (classListTarget[key] === 'to') {
+            valueFilterFromTo.to = target.value
+        } else if (classListTarget[key] === 'input--number_range-from-to' && target.checked) {
+            valueFilterFromTo.from = valueTargetFrom
+            valueFilterFromTo.to = valueTargetTo
+        } else if (classListTarget[key] === 'input--number_range-from-to' && !target.checked) {
+            valueFilterFromTo.from = ''
+            valueFilterFromTo.to = ''
         }
-    })
-        .filter(item => item)
-        .join('&')
-    return params
+    }
 }
 
+const createUrlFilterNumberRange = (paramsFilters, group) => {
+    let params = paramsFilters.find(item => item.groupId === group)
+    if (params.from && params.to) {
+        return `${params.groupId}[from]=${params.from}&${params.groupId}[to]=${params.to}`
+    } else if (params.from) {
+        return `${params.groupId}[from]=${params.from}`
+    } else if (params.to) {
+        return `${params.groupId}[to]=${params.to}`
+    }
+}
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-const filtersProductsDictionary = (target) => {
-    const groupId = target.dataset.groupId
-    const itemId = target.dataset.itemId
+const changeParamsFilterTypeDictionary = (target) => {
+    const groupId = getGroupTarget(target)
+    const itemId = getItemIdTarget(target)
+    const group = filterValues.find(item => item.groupId === groupId)
     if (target.checked) {
-        filterValues.map(group => {
-            if (group.groupId === groupId) {
-                group.itemIds.push(itemId)
-            } return
-        })
-    } else if (!target.checked) {
-        filterValues.map(group => {
-            if (group.groupId === groupId) {
-                group.itemIds = group.itemIds.filter(item => item !== itemId)
-            }
-
-        })
+        group.itemIds.push(itemId)
+    } else {
+        group.itemIds = group.itemIds.filter(item => item !== itemId)
     }
-    params = filterValues.map(group => {
-        if (group.itemIds) {
-            return group.itemIds.map((item, index) => `${group.groupId}[${index}]=${item}`).join('&')
-        }
-    })
-        .filter(item => item)
-        .join('&')
-    return params
 }
 
-const filtersProductsBoolean = (target) => {
-    const groupId = target.dataset.groupId
+const createUrlFilterTypeDictionary = (paramsFilters, group) => {
+    const params = paramsFilters.find(item => item.groupId === group)
+    let arr = params.itemIds.map((item, index) => `${params.groupId}[${index}]=${item}`).join('&')
+    return arr
+}
+
+const changeParamsFilterTypeBoolean = target => {
+    const groupId = getGroupTarget(target)
     if (target.checked) {
-        filterValues.map(group => {
-            if (group.groupId === groupId) {
-                group.state = true
-            }
-        })
-        params = filterValues.map(group => {
-            if (group.state === true) {
-                return `${group.groupId}=1`
-            }
-        })
-            .filter(item => item)
-            .join('&')
+        filterValues.find(itemTypeBoolean => itemTypeBoolean.groupId === groupId).state = true
+    } else {
+        filterValues.find(itemTypeBoolean => itemTypeBoolean.groupId === groupId).state = false
     }
-    if (!target.checked) {
-        filterValues.map(group => {
-            if (group.groupId === groupId) {
-                group.state = false
-            }
-        })
-        params = filterValues.map(group => {
-            if (group.state === true) {
-                return `${group.groupId}=1`
-            }
-        })
-            .filter(item => item)
-            .join('&')
-    }
-    return params
 }
 
+const createUrlFilterTypeBoolean = paramsFilters => {
+    return paramsFilters.filter(item => item.state).map(item => `${item.groupId}=1`).join('&')
+}
+
+const getGroupTarget = target => target.dataset.groupId
+const getItemIdTarget = target => target.dataset.itemId
 
 
 
@@ -188,20 +137,132 @@ const filtersProductsBoolean = (target) => {
 
 
 
+// let paramsUrlBoolean = ''
+// let paramsUrlDictionary = ''
+// let paramsUrlNumberRange = ''
+
+
+// document.querySelector('.filter').addEventListener('input', e => {
+//     const classListCheckbox = e.target.classList
+//     for (let key in classListCheckbox) {
+//         if (classListCheckbox[key] === 'js-check') {
+//             showFiltersProducts(e.target)
+//         }
+//     }
+// })
+
+// const showFiltersProducts = target => {
+//     // const targetType = target.dataset.type
+//     // switch (targetType) {
+//     //     case 'dictionary': paramsUrlDictionary = changeParamsFilterTypeDictionary(target)
+//     //         break;
+
+//     //     case 'boolean': paramsUrlBoolean = changeParamsFilterTypeBoolean(target)
+//     //         break;
+
+//     //     case 'number_range': paramsUrlNumberRange = changeParamsFilterNumberRange(target)
+//     //         break;
+
+//     //     default: break
+//     // }
+//     changeObjectDataFilterValues(target)
+//     const url = createUrl(paramsUrlBoolean, paramsUrlDictionary, paramsUrlNumberRange)
+//     clearPage()
+//     sendRequest(url)
+// }
 
 
 
+// const changeObjectDataFilterValues = (target) => {
+//     const targetType = target.dataset.type
+//     const groupId = getGroupTarget(target)
 
+//     switch (targetType) {
+//         case 'dictionary': paramsUrlDictionary = changeParamsFilterTypeDictionary(target)
+//             break;
 
+//         case 'boolean': paramsUrlBoolean = changeParamsFilterTypeBoolean(target)
+//             break;
 
+//         case 'number_range': paramsUrlNumberRange = changeParamsFilterTypeNumberRange(target)
+//             break;
 
+//         default: break
+//     }
+// }
 
+// const createUrl = (params1, params2, params3) => {
+//     let urlParamsFilter = [params1, params2, params3].filter(item => item).join('&')
+//     return `${requestURL}${urlParamsFilter}`
+// }
 
+// const changeParamsFilterTypeNumberRange = target => {
+//     const groupId = getGroupTarget(target)
+//     const itemId = getItemIdTarget(target)
+//     const valueTargetFrom = target.value.split(',')[0]
+//     const valueTargetTo = target.value.split(',')[1]
+//     const valueFilterFromTo = filterValues.find(item => item.groupId === groupId)
+//     const classListTarget = target.classList
 
+//     for (let key in classListTarget) {
+//         if (classListTarget[key] === 'from') {
+//             valueFilterFromTo.from = target.value
+//         } else if (classListTarget[key] === 'to') {
+//             valueFilterFromTo.to = target.value
+//         } else if (classListTarget[key] === 'input--number_range-from-to' && target.checked) {
+//             valueFilterFromTo.from = valueTargetFrom
+//             valueFilterFromTo.to = valueTargetTo
+//         } else if (classListTarget[key] === 'input--number_range-from-to' && !target.checked) {
+//             valueFilterFromTo.from = ''
+//             valueFilterFromTo.to = ''
+//         }
+//     }
+//     return createUrlFilterNumberRange(filterValues, groupId)
+// }
 
+// const createUrlFilterNumberRange = (paramsFilters, group) => {
+//     let params = paramsFilters.find(item => item.groupId === group)
+//     console.log(params.from, params.to)
+//     if (params.from && params.to) {
+//         return `${params.groupId}[from]=${params.from}&${params.groupId}[to]=${params.to}`
+//     } else if (params.from) {
+//         return `${params.groupId}[from]=${params.from}`
+//     } else if (params.to) {
+//         return `${params.groupId}[to]=${params.to}`
+//     }
+// }
+// const getGroupTarget = target => target.dataset.groupId
+// const getItemIdTarget = target => target.dataset.itemId
 
+// const changeParamsFilterTypeDictionary = (target) => {
+//     const groupId = getGroupTarget(target)
+//     const itemId = getItemIdTarget(target)
+//     const group = filterValues.find(item => item.groupId === groupId)
+//     if (target.checked) {
+//         group.itemIds.push(itemId)
+//     } else {
+//         group.itemIds = group.itemIds.filter(item => item !== itemId)
+//     }
+//     createUrlFilterTypeBooleanDictionary(filterValues, groupId)
+//     return createUrlFilterTypeBooleanDictionary(filterValues, groupId)
+// }
+// const createUrlFilterTypeBooleanDictionary = (paramsFilters, group) => {
+//     const params = paramsFilters.find(item => item.groupId === group)
+//     return params.itemIds.map((item, index) => `${params.groupId}[${index}]=${item}`).join('&')
+// }
+// const changeParamsFilterTypeBoolean = target => {
+//     const groupId = getGroupTarget(target)
+//     if (target.checked) {
+//         filterValues.find(itemTypeBoolean => itemTypeBoolean.groupId === groupId).state = true
+//     } else {
+//         filterValues.find(itemTypeBoolean => itemTypeBoolean.groupId === groupId).state = false
+//     }
+//     return createUrlFilterTypeBoolean(filterValues)
+// }
 
-
+// const createUrlFilterTypeBoolean = paramsFilters => {
+//     return paramsFilters.filter(item => item.state).map(item => `${item.groupId}=1`).join('&')
+// }
 
 
 
@@ -249,9 +310,13 @@ const filtersProductsBoolean = (target) => {
 
 
 
+// // const group = filterValues.find(itemTypeBoolean => itemTypeBoolean.groupId === groupId);
+// // group.state = target.checked ? true : false;
 
-
-
+ // // const changeParamsFiltersTypeBoolean = (target) => {
+////     filterValues.find(itemTypeBoolean => itemTypeBoolean.groupId === getGroupTarget(target)).state = target.checked
+////     return createUrlFilterTypeBoolean(filterValues)
+//// }
 
 
 

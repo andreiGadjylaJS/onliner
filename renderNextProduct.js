@@ -3,11 +3,15 @@ const inputNextProduct = document.querySelector('.input__next')
 inputNextProduct.addEventListener('click', showNewPage)
 
 function showNewPage() {
-    requestURL = `https://catalog.onliner.by/sdapi/catalog.api/search/refrigerator?page=${current}`
+    current++
+    if (urlParamsFilter) {
+        requestURL += `https://catalog.onliner.by/sdapi/catalog.api/search/refrigerator?${urlParamsFilter}&page=${current}`
+    } else {
+        requestURL = `https://catalog.onliner.by/sdapi/catalog.api/search/refrigerator?page=${current}`
+    }
     clearPage()
     sendRequest(requestURL)
 }
-
 
 
 
