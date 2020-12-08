@@ -4,56 +4,9 @@ inputNextProduct.addEventListener('click', showNewPage)
 
 function showNewPage() {
     current++
-    if (urlParamsFilter) {
-        requestURL += `https://catalog.onliner.by/sdapi/catalog.api/search/refrigerator?${urlParamsFilter}&page=${current}`
-    } else {
-        requestURL = `https://catalog.onliner.by/sdapi/catalog.api/search/refrigerator?page=${current}`
-    }
+    urlNextPage ? requestURL = `${urlNextPage}&page=${current}` : requestURL = requestURL + `&page=${current}`
     clearPage()
     sendRequest(requestURL)
 }
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// const inputNextProduct = document.querySelector('.input__next')
-
-// inputNextProduct.addEventListener('click', showNewPage)
-
-// function showNewPage() {
-
-//     if (arrCheckProducts.length === 0) {
-//         requestURL = `https://catalog.onliner.by/sdapi/catalog.api/search/refrigerator?page=${current}`
-//         clearPage()
-//         sendRequest(requestURL)
-//     } else {
-//         requestURL = urlFilter + `&page=${current}`
-//         clearPage()
-//         sendRequest(requestURL)
-//     }
-
-
-
-// }

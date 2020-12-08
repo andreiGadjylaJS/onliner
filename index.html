@@ -5,15 +5,19 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>onliner</title>
+
     <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="style.css">
+    <script src="https://kit.fontawesome.com/7de7accbb7.js" crossorigin="anonymous"></script>
 </head>
 
 <body>
     <header class='header'>
         <div class="header__logo">
-            <img src="https://gc.onliner.by/images/logo/onliner_logo.v3.png?token=1604053779" alt="логотип"></div>
+            <a href="#"><img src="https://gc.onliner.by/images/logo/onliner_logo.v3.png?token=1604053779"
+                    alt="логотип"></a>
+        </div>
         <div class='header__search'>
             <form>
                 <input type="text" placeholder="Искать здесь..." class='header__input_search'>
@@ -22,13 +26,11 @@
         </div>
         <div class="header__icon">
             <ul>
-                <li><i class="fa fa-user-circle" aria-hidden="true"></i></li>
-                <li><i class="fa fa-sort-desc" aria-hidden="true"></i></li>
-                <li><i class="fa fa-comment-o" aria-hidden="true"></i></li>
-                <li><i class="fa fa-bell-o" aria-hidden="true"></i></li>
-                <li><i class="fa fa-star-o" aria-hidden="true"></i></li>
-                <li><i class="fa fa-shopping-cart" aria-hidden="true"></i></li>
-
+                <li><i class="far fa-user-circle"></i></i></li>
+                <li><i class="fas fa-angle-up"></i></li>
+                <li><i class="far fa-comment"></i></li>
+                <li><i class="far fa-bell"></i></li>
+                <li><i class="far fa-star"></i></li>
             </ul>
         </div>
     </header>
@@ -38,7 +40,7 @@
         <section class="content"></section>
     </main>
 
-    <input type="button" class="input__filter" value='дешёвые &#9660'>
+    <!-- <input type="button" class="input__filter" value='дешёвые &#9660'> -->
     <div class="input__next">
         <a href="#">Следующие 30 товаров</a>
     </div>
@@ -70,12 +72,14 @@
         </div>
     </footer>
 
+
+    <script src='renderRatingStars.js'></script>
     <script src='renderNextProduct.js'></script>
     <script src="getOptions.js"></script>
     <script src='renderProducts.js'></script>
     <script src='showFilterProducts.js'></script>
     <script src='main.js'></script>
-    <script src="filtersProducts.js"></script>
+    <script src="filterProducts.js"></script>
 
 </body>
 
