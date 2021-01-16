@@ -34,6 +34,7 @@ function sendRequestFacets(url) {
 
                 }
             })
+            // console.log(filterValues)
             return showFilterProducts(response)
         })
 }

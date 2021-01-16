@@ -11,7 +11,7 @@ const showsFilteredProducts = target => {
     const targetType = target.dataset.type
     const groupId = getGroup(target)
     changeObjectDataFilterValues(target)
-    urlNextPage = `https://catalog.onliner.by/sdapi/catalog.api/search/smartwatch?${getChangeFilterValues(groupId)}&group=1`
+    urlNextPage = `https://catalog.onliner.by/sdapi/catalog.api/search/smartwatch?${getChangeFilterValues()}&group=1`
     clearPage()
     sendRequest(urlNextPage)
 }

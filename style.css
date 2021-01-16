@@ -266,6 +266,9 @@ input[type="number"]::-webkit-inner-spin-button {
 .fas.fas_in {
   color: #e7e7e7;
 }
+.fas.fa-ster-half-alt {
+  color: #f07700;
+}
 .fa-angle-up {
   display: block;
 }
@@ -441,7 +444,7 @@ input[type="number"]::-webkit-inner-spin-button {
   display: flex;
 }
 
-.fas.stars__in {
+.stars__in {
   color: #f07700;
 }
 

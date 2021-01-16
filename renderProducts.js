@@ -36,9 +36,7 @@ const renderProducts = products => {
 }
 
 
-const renderPrices = url => {
-    sendRequest(url)
-}
+
 
 const getWordDeclineOffers = num => {
     const words = ['предложение', 'предложения', 'предложений']
@@ -84,3 +82,12 @@ const inclinesWord = (arr, num) => {
         }
     }
 }
+
+
+
+
+
+
+// const renderPrices = url => {
+//     sendRequest(url)
+// }
